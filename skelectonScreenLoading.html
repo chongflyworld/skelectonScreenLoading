@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skeleton Screen Loading</title>
+    <style>
+        :root {
+            --loading-grey: #ededed;
+        }
+
+
+        body {
+            background-color: #f6f6f6;
+            font-family: Helvetica;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            transition: display 1s;
+            display: none;
+            min-width: 320px;
+            max-width: 320px;
+            background-color: #fff;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, .12);
+        }
+
+        .image {
+            height: 200px;
+        }
+
+        .image img {
+            display: block;
+            width: 100%;
+            height: inherit;
+            object-fit: cover;
+        }
+
+        .content {
+            padding: 2rem 1.8rem;
+        }
+
+        h4 {
+            margin: 0 0 1rem;
+            font-size: 1.5rem;
+            line-height: 1.5rem;
+        }
+
+        .description {
+            font-size: 1rem;
+            line-height: 1.4rem;
+        }
+
+        .loading .image,
+        .loading h4,
+        .loading .description {
+            background-color: var(--loading-grey);
+            background: linear-gradient(101deg,
+                    rgba(255, 255, 255, 0) 40%,
+                    rgba(255, 255, 255, .5) 50%,
+                    rgba(255, 255, 255, 0) 60%) var(--loading-grey);
+            background-size: 200% 100%;
+            background-position-x: 150%;
+            animation: 1s loading ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            to {
+                background-position-x: -20%;
+            }
+        }
+
+        .loading {
+            transition: display 1s;
+            display: block;
+        }
+
+        .loading h4 {
+            min-height: 1.6rem;
+            border-radius: 4px;
+            animation-delay: .06s;
+        }
+
+        .loading .description {
+            min-height: 4rem;
+            border-radius: 4px;
+            animation-delay: .06s;
+        }
+    </style>
+</head>
+
+<body>
+    <div onclick="reload()" class="card">
+        <div class="image">
+            <img src="https://picsum.photos/360/460?random=1" alt="">
+        </div>
+        <div class="content">
+            <h4></h4>
+            <div class="description"></div>
+        </div>
+    </div>
+
+    <div class="card loading">
+        <div class="image">
+        </div>
+        <div class="content">
+            <h4></h4>
+            <div class="description"></div>
+        </div>
+    </div>
+
+
+    <script>
+        function reload(){
+            location.reload();
+        }
+
+        function send() {
+            var xhrDescription = new XMLHttpRequest();
+            let isDisplay = true;
+            let isShow = document.getElementsByClassName('card')[0].style;
+            let isNone = document.getElementsByClassName('card')[1].style;
+            xhrDescription.open('get', 'https://v1.hitokoto.cn/?c=a');
+            xhrDescription.onreadystatechange = function () {
+                if (xhrDescription.readyState === 4) {
+                    var data = JSON.parse(xhrDescription.responseText);
+                    var h4 = document.getElementsByTagName('h4')[0];
+                    var description = document.getElementsByClassName('description')[0];
+
+                    h4.innerText = data.from;
+                    description.innerText = data.hitokoto;
+                    var h4 = document.getElementsByTagName('h4')[0];
+                }
+            }
+            setTimeout(() => {
+                xhrDescription.send();
+                isDisplay = !isDisplay;
+                isNone.display = isDisplay ? 'none' : 'block';
+                isShow.display = isDisplay ? 'block' : 'none';
+
+            }, 1200);
+
+            isDisplay = !isDisplay;
+            isNone.display = isDisplay ? 'none' : 'block';
+            isShow.display = isDisplay ? 'block' : 'none';
+
+        }
+
+        send();
+    </script>
+</body>
+
+</html>
