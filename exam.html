@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skeleton Screen Loading</title>
+    <style>
+        :root {
+            --loading-grey: #ededed;
+        }
+
+
+        body {
+            background-color: #f6f6f6;
+            font-family: Helvetica;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            transition: display 1s;
+            min-width: 320px;
+            max-width: 320px;
+            background-color: #fff;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, .12);
+        }
+
+        .image {
+            height: 200px;
+        }
+
+        .image img {
+            display: block;
+            width: 100%;
+            height: inherit;
+            object-fit: cover;
+        }
+
+        .content {
+            padding: 2rem 1.8rem;
+        }
+
+        h4 {
+            margin: 0 0 1rem;
+            font-size: 1.5rem;
+            line-height: 1.5rem;
+        }
+
+        .description {
+            font-size: 1rem;
+            line-height: 1.4rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button onclick="test()">
+        生成图片
+    </button>
+
+
+
+
+
+
+    <script>
+        let id = new Array();
+        let image = new Array();
+
+        function model(img, id) {
+            return `
+                <div class="card">
+                    <div class="image">
+                    <img src="${img}" alt="">
+                    </div>
+                    <div class="content">
+                        <h4>ID</h4>
+                        <div class="description">${id}</div>
+                    </div>
+                </div>
+            `
+        }
+
+        function test() {
+
+            let str = '';
+
+            let get = new Promise(function (Resolve, Reject) {
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        image[i] = `https://picsum.photos/360/460?random=1`;
+                        id[i] = new Date().getTime();
+                        str += model(image[i], id[i]);
+                        if (i == 4) {
+                            console.log(str)
+                            Resolve();
+                        }
+                    }, i * 1000);
+
+                }
+
+            });
+
+            get.then(
+                function () {
+                    document.getElementsByTagName('body')[0].innerHTML = str;
+                }
+
+            )
+
+
+
+
+
+
+
+        }
+    </script>
+</body>
+
+</html>
