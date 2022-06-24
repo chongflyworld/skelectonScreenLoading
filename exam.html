@@ -67,15 +67,10 @@
         生成图片
     </button>
 
-
-
-
-
-
     <script>
         let id = new Array();
         let image = new Array();
-        document.getElementsByTagName('body')[0].innerHTML = '生成图片中...';
+        
 
         function model(img, id) {
             return `
@@ -94,6 +89,7 @@
         function test() {
 
             let str = '';
+            document.getElementsByTagName('body')[0].innerHTML = '生成图片中...';
 
             let get = new Promise(function (Resolve, Reject) {
                 for (let i = 0; i < 5; i++) {
@@ -117,12 +113,6 @@
                 }
 
             )
-
-
-
-
-
-
 
         }
     </script>
